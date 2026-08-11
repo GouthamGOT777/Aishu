@@ -61,6 +61,29 @@
     50%{ opacity:1; transform:scale(1.4); }
   }
 
+  /* ---------- Floating love words (pop in/out) ---------- */
+  .love-word{
+    position:absolute;
+    font-weight:800;
+    letter-spacing:1px;
+    background: linear-gradient(135deg, var(--gold), var(--pink));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    filter: drop-shadow(0 0 10px rgba(255,93,162,.55));
+    opacity:0;
+    animation: wordPop ease-in-out infinite;
+    transform-style: preserve-3d;
+    white-space:nowrap;
+  }
+  @keyframes wordPop{
+    0%   { transform: scale(0.2) rotate(var(--wr,-8deg)) translateY(0); opacity:0; }
+    12%  { transform: scale(1.25) rotate(0deg) translateY(-6px); opacity:1; }
+    20%  { transform: scale(1) rotate(0deg) translateY(-10px); opacity:1; }
+    75%  { transform: scale(1) rotate(0deg) translateY(-40px); opacity:1; }
+    100% { transform: scale(0.3) rotate(var(--wr2,8deg)) translateY(-70px); opacity:0; }
+  }
+
   /* ---------- Floating roses ---------- */
   .rose{
     position:absolute;
@@ -254,6 +277,7 @@
     background: radial-gradient(circle at 35% 30%, #ffe3f0, #ff8fc0 40%, var(--deep) 100%);
     box-shadow: inset 0 0 25px rgba(0,0,0,.35);
     animation: pulseAvatar 2.6s ease-in-out infinite;
+    cursor:pointer;
   }
   @keyframes pulseAvatar{
     0%,100%{ box-shadow: inset 0 0 25px rgba(0,0,0,.35), 0 0 25px rgba(255,93,162,.5);}
@@ -389,6 +413,7 @@
   .gallery img{
     width:100%; height:100%; object-fit:cover; display:block;
     animation: zoomPulse 6s ease-in-out infinite;
+    cursor:pointer;
   }
   .gallery figure:nth-child(odd) img{ animation-duration:7s; }
   .gallery figure:nth-child(3n) img{ animation-duration:5.5s; animation-delay:.6s; }
@@ -637,9 +662,96 @@
   @keyframes burstUp{
     to{ transform: translateY(-160px) translateX(var(--bx,0)) rotate(var(--br,180deg)); opacity:0; }
   }
+
+  /* ---------- Fullscreen image lightbox ---------- */
+  #lightbox{
+    position:fixed; inset:0;
+    z-index:200;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(10,4,14,0);
+    backdrop-filter: blur(0px);
+    cursor:zoom-out;
+    opacity:0;
+    pointer-events:none;
+    transition: background .45s ease, backdrop-filter .45s ease, opacity .3s ease;
+  }
+  #lightbox.active{
+    background: rgba(10,4,14,.92);
+    backdrop-filter: blur(6px);
+    opacity:1;
+    pointer-events:auto;
+  }
+  #lightbox .lightbox-frame{
+    position:relative;
+    max-width:88vw;
+    max-height:82vh;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow: 0 25px 80px rgba(0,0,0,.6), 0 0 60px rgba(255,93,162,.4);
+    border:3px solid rgba(255,255,255,.25);
+    transform: scale(0.2) translateY(40px) rotate(-6deg);
+    opacity:0;
+    transition: transform .5s cubic-bezier(.34,1.56,.64,1), opacity .4s ease;
+  }
+  #lightbox.active .lightbox-frame{
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity:1;
+    animation: lightboxFloat 4s ease-in-out infinite 0.5s, lightboxZoom 5s ease-in-out infinite 0.5s;
+  }
+  #lightbox img{
+    display:block;
+    max-width:88vw;
+    max-height:82vh;
+    object-fit:contain;
+  }
+  @keyframes lightboxFloat{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-16px) rotate(1deg); }
+  }
+  @keyframes lightboxZoom{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.045); }
+  }
+  #lightbox .lightbox-hint{
+    position:absolute;
+    bottom:-42px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:13px;
+    letter-spacing:1px;
+    color:rgba(255,255,255,.7);
+    white-space:nowrap;
+    opacity:0;
+    transition: opacity .5s ease .3s;
+  }
+  #lightbox.active .lightbox-hint{ opacity:1; }
+  #lightbox .lightbox-close{
+    position:absolute;
+    top:-46px;
+    right:0;
+    width:38px; height:38px;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.3);
+    color:#fff;
+    font-size:20px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
 </style>
 </head>
 <body>
+
+<!-- ---------- Fullscreen image lightbox ---------- -->
+<div id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-frame" onclick="event.stopPropagation()">
+    <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-hint">tap anywhere to go back</div>
+  </div>
+</div>
 
 <div class="mega-rose">🌹</div>
 <div class="mega-rose-2">🌹</div>
@@ -658,6 +770,22 @@
   <div class="rose" style="left:8vw; font-size:20px; --rdrift:-20px; --rr0:9deg; --rr1:-14deg; animation-duration:17s; animation-delay:-11s;">🌹</div>
   <div class="rose" style="left:55vw; font-size:18px; --rdrift:22px; --rr0:-9deg; --rr1:15deg; animation-duration:9.5s; animation-delay:-3.5s;">🌹</div>
   <div class="rose" style="left:33vw; font-size:24px; --rdrift:-38px; --rr0:13deg; --rr1:-11deg; animation-duration:13.5s; animation-delay:-10s;">🌸</div>
+  <!-- Floating love words, popping in and out -->
+  <div class="love-word" style="left:5vw; top:15vh; font-size:26px; --wr:-10deg; --wr2:8deg; animation-duration:6s; animation-delay:-1s;">Love</div>
+  <div class="love-word" style="left:20vw; top:60vh; font-size:20px; --wr:8deg; --wr2:-6deg; animation-duration:7.5s; animation-delay:-3.2s;">Care</div>
+  <div class="love-word" style="left:35vw; top:25vh; font-size:22px; --wr:-6deg; --wr2:9deg; animation-duration:6.8s; animation-delay:-5s;">Sweet</div>
+  <div class="love-word" style="left:50vw; top:70vh; font-size:24px; --wr:7deg; --wr2:-8deg; animation-duration:8s; animation-delay:-2.1s;">Cute</div>
+  <div class="love-word" style="left:65vw; top:18vh; font-size:20px; --wr:-9deg; --wr2:6deg; animation-duration:6.3s; animation-delay:-4.4s;">Adore</div>
+  <div class="love-word" style="left:8vw; top:80vh; font-size:22px; --wr:6deg; --wr2:-9deg; animation-duration:7.2s; animation-delay:-6s;">Darling</div>
+  <div class="love-word" style="left:78vw; top:55vh; font-size:26px; --wr:-8deg; --wr2:7deg; animation-duration:6.6s; animation-delay:-1.6s;">Forever</div>
+  <div class="love-word" style="left:42vw; top:8vh; font-size:18px; --wr:9deg; --wr2:-6deg; animation-duration:7.8s; animation-delay:-3.8s;">Cherish</div>
+  <div class="love-word" style="left:88vw; top:30vh; font-size:20px; --wr:-7deg; --wr2:8deg; animation-duration:6.4s; animation-delay:-5.5s;">Precious</div>
+  <div class="love-word" style="left:14vw; top:38vh; font-size:24px; --wr:8deg; --wr2:-7deg; animation-duration:7.4s; animation-delay:-2.7s;">Beautiful</div>
+  <div class="love-word" style="left:58vw; top:82vh; font-size:20px; --wr:-6deg; --wr2:9deg; animation-duration:6.9s; animation-delay:-4.9s;">Angel</div>
+  <div class="love-word" style="left:30vw; top:88vh; font-size:22px; --wr:7deg; --wr2:-8deg; animation-duration:7.1s; animation-delay:-1.2s;">Sweetheart</div>
+  <div class="love-word" style="left:72vw; top:8vh; font-size:18px; --wr:-9deg; --wr2:6deg; animation-duration:6.1s; animation-delay:-6.3s;">Hug</div>
+  <div class="love-word" style="left:92vw; top:65vh; font-size:20px; --wr:6deg; --wr2:-9deg; animation-duration:7.6s; animation-delay:-3.4s;">Kiss</div>
+
   <!-- Hardcoded floating background photos (no JS needed — works as a static wallpaper too) -->
   <div class="photo-float" style="width:100px;height:130px;left:6vw;bottom:-20vh;--drift:60px;--rot-start:-10deg;--rot-end:8deg;--scl:1;--maxop:0.9;animation-duration:18s,18s;animation-delay:-2s,-2s;">
     <img src="image1.jpg" alt="" style="animation-duration:4.2s; animation-delay:.2s;">
@@ -697,7 +825,7 @@
   <div class="introRing"></div>
   <div class="heartbeat">💖</div>
   <div id="introName">Aishwarya</div>
-  <div id="introSub">Sundri , a little something for you</div>
+  <div id="introSub">a little something for you</div>
 </div>
 
 <main>
@@ -709,7 +837,7 @@
   -->
   <div class="avatar-wrap">
     <div class="avatar-ring"></div>
-    <div class="avatar">
+    <div class="avatar" onclick="toggleLightbox('image1.jpg')">
       <img src="image1.jpg" alt="Aishwarya">
       <img src="image2.jpg" alt="Aishwarya">
       <img src="image3.jpg" alt="Aishwarya">
@@ -726,12 +854,12 @@
   </div>
 
   <div class="gallery">
-    <figure><img src="image1.jpg" alt="photo 1"><figcaption>1</figcaption></figure>
-    <figure><img src="image2.jpg" alt="photo 2"><figcaption>2</figcaption></figure>
-    <figure><img src="image3.jpg" alt="photo 3"><figcaption>3</figcaption></figure>
-    <figure><img src="image4.jpg" alt="photo 4"><figcaption>4</figcaption></figure>
-    <figure><img src="image5.jpg" alt="photo 5"><figcaption>5</figcaption></figure>
-    <figure><img src="image6.jpg" alt="photo 6"><figcaption>6</figcaption></figure>
+    <figure><img src="image1.jpg" alt="photo 1" onclick="toggleLightbox('image1.jpg')"><figcaption>1</figcaption></figure>
+    <figure><img src="image2.jpg" alt="photo 2" onclick="toggleLightbox('image2.jpg')"><figcaption>2</figcaption></figure>
+    <figure><img src="image3.jpg" alt="photo 3" onclick="toggleLightbox('image3.jpg')"><figcaption>3</figcaption></figure>
+    <figure><img src="image4.jpg" alt="photo 4" onclick="toggleLightbox('image4.jpg')"><figcaption>4</figcaption></figure>
+    <figure><img src="image5.jpg" alt="photo 5" onclick="toggleLightbox('image5.jpg')"><figcaption>5</figcaption></figure>
+    <figure><img src="image6.jpg" alt="photo 6" onclick="toggleLightbox('image6.jpg')"><figcaption>6</figcaption></figure>
   </div>
 
   <!-- ---------- Surprise Photo Reveal ---------- -->
@@ -806,6 +934,34 @@
 </main>
 
 <script>
+  // ---------- Fullscreen image lightbox ----------
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  let currentLightboxSrc = null;
+
+  function toggleLightbox(src){
+    // Clicking the SAME image that's already open closes it and returns home
+    if(lightbox.classList.contains('active') && currentLightboxSrc === src){
+      closeLightbox();
+      return;
+    }
+    currentLightboxSrc = src;
+    lightboxImg.src = src;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(){
+    lightbox.classList.remove('active');
+    currentLightboxSrc = null;
+    document.body.style.overflow = '';
+  }
+
+  // Escape key also closes it
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeLightbox();
+  });
+
   // Background floating hearts
   const field = document.getElementById('heartField');
   const emojis = ['💖','💗','💕','💓','💘','✨'];
