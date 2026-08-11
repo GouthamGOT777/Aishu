@@ -24,21 +24,22 @@
   .bg-photo{
     position:fixed;
     inset:0;
-    z-index:-1;
+    z-index:0;
     background-image:url('image-bg.jpeg');
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
     background-attachment:fixed;
+    background-color: var(--bg1); /* visible fallback tint if the image fails to load */
   }
 
   /* ---------- Floating hearts + sparkles background ---------- */
   .heart-field{
-    position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;
+    position:fixed; inset:0; overflow:hidden; z-index:1; pointer-events:none;
     perspective: 1000px;
   }
   .dim-overlay{
-    position:fixed; inset:0; z-index:1; pointer-events:none;
+    position:fixed; inset:0; z-index:2; pointer-events:none;
     background: radial-gradient(circle at 50% 30%, rgba(26,11,31,.08), rgba(26,11,31,.32) 78%);
   }
   .heart{
@@ -110,7 +111,7 @@
   /* ---------- Big constant background rose ---------- */
   .mega-rose{
     position:fixed;
-    z-index:0;
+    z-index:1;
     pointer-events:none;
     right:-6vw;
     bottom:-8vh;
@@ -131,7 +132,7 @@
   }
   .mega-rose-2{
     position:fixed;
-    z-index:0;
+    z-index:1;
     pointer-events:none;
     left:-10vw;
     top:-10vh;
@@ -255,7 +256,7 @@
 
   /* ---------- Main content ---------- */
   main{
-    position:relative; z-index:2;
+    position:relative; z-index:3;
     min-height:100vh;
     display:flex; flex-direction:column; align-items:center;
     padding:60px 20px 100px;
