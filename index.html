@@ -447,20 +447,20 @@
   .gallery figure:hover figcaption{ opacity:1; }
 
   /* ---------- Scroll photo story: one image at a time, zoom + floating quote ---------- */
-  .story-heading{
-    margin-top:60px;
-    font-size:20px;
-    letter-spacing:1px;
-    opacity:.9;
-    animation: fadeWobble 3.4s ease-in-out infinite;
-  }
   .scroll-story{
     width:100%;
     max-width:640px;
-    margin-top:26px;
+    margin-top:60px;
     display:flex;
     flex-direction:column;
     gap:70px;
+  }
+  .story-heading{
+    font-size:18px;
+    letter-spacing:1px;
+    opacity:.85;
+    margin-bottom:6px;
+    animation: fadeWobble 3.2s ease-in-out infinite;
   }
   .story-panel{
     position:relative;
@@ -471,14 +471,13 @@
     overflow:hidden;
     box-shadow:0 25px 60px rgba(0,0,0,.5), 0 0 40px rgba(255,93,162,.25);
     border:2px solid rgba(255,255,255,.18);
-    /* visible by default — JS only adds a subtle "pop" below, it never gates visibility */
-    opacity:1;
-    transform: translateY(0) scale(1);
-    transition: transform .9s cubic-bezier(.22,1,.36,1), box-shadow .9s ease;
+    opacity:0;
+    transform: translateY(60px) scale(.92);
+    transition: opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1);
   }
   .story-panel.in-view{
-    transform: translateY(0) scale(1.02);
-    box-shadow:0 30px 70px rgba(0,0,0,.55), 0 0 55px rgba(255,93,162,.35);
+    opacity:1;
+    transform: translateY(0) scale(1);
   }
   .story-photo{
     position:absolute;
@@ -507,9 +506,8 @@
     line-height:1.5;
     color:#fff;
     text-shadow:0 4px 20px rgba(0,0,0,.7);
-    /* visible by default at reduced opacity — JS bumps it to full on scroll-into-view */
-    opacity:.75;
-    transform:translateY(0);
+    opacity:0;
+    transform:translateY(24px);
     transition: opacity 1s ease .25s, transform 1s ease .25s;
     animation: quoteFloatY 4.5s ease-in-out infinite;
   }
@@ -529,20 +527,20 @@
     margin-bottom:6px;
     opacity:.9;
   }
-  .story-count{
+  .story-counter{
     position:absolute;
-    top:20px;
-    right:24px;
-    font-size:13px;
+    top:18px;
+    right:20px;
+    font-size:12px;
     letter-spacing:2px;
-    padding:6px 14px;
+    padding:6px 12px;
     border-radius:50px;
     background:rgba(0,0,0,.35);
     border:1px solid rgba(255,255,255,.25);
     opacity:0;
-    transition:opacity .8s ease .3s;
+    transition:opacity .8s ease .4s;
   }
-  .story-panel.in-view .story-count{ opacity:.85; }
+  .story-panel.in-view .story-counter{ opacity:.85; }
 
   /* ---------- Surprise polaroid ---------- */
   .surprise-wrap{
@@ -939,7 +937,7 @@
   <div class="introRing"></div>
   <div class="introRing"></div>
   <div class="heartbeat">💖</div>
-  <div id="introName">Sundri 💖💖💖</div>
+  <div id="introName">Aishwarya</div>
   <div id="introSub">a little something for you</div>
 </div>
 
@@ -948,8 +946,8 @@
     IMAGE SETUP:
     Put image1.jpg, image2.jpg, image3.jpg (etc.) in the SAME GitHub repo folder as this HTML file.
     The circular avatar below cross-fades between image1/2/3.
-    The strip further down shows all of them as a gallery — add more <figure> blocks to match how many images you upload.
-    The scroll-story section further down shows each photo full-screen, one at a time, as you scroll.
+    The strip further down shows all of them as a gallery.
+    The scroll-story section further down reveals each image one at a time as you scroll, with a floating quote.
   -->
   <div class="avatar-wrap">
     <div class="avatar-ring"></div>
@@ -969,26 +967,53 @@
     <p>This page exists for one reason only — to make you smile today.</p>
   </div>
 
-  <!-- ---------- Scroll photo story: one image at a time, zoom in/out ---------- -->
-  <h2 class="story-heading">Keep scrolling 💫</h2>
+  <div class="gallery">
+    <figure><img src="image1.jpg" alt="photo 1" onclick="toggleLightbox('image1.jpg')"><figcaption>1</figcaption></figure>
+    <figure><img src="image2.jpg" alt="photo 2" onclick="toggleLightbox('image2.jpg')"><figcaption>2</figcaption></figure>
+    <figure><img src="image3.jpg" alt="photo 3" onclick="toggleLightbox('image3.jpg')"><figcaption>3</figcaption></figure>
+    <figure><img src="image4.jpg" alt="photo 4" onclick="toggleLightbox('image4.jpg')"><figcaption>4</figcaption></figure>
+    <figure><img src="image5.jpg" alt="photo 5" onclick="toggleLightbox('image5.jpg')"><figcaption>5</figcaption></figure>
+    <figure><img src="image6.jpg" alt="photo 6" onclick="toggleLightbox('image6.jpg')"><figcaption>6</figcaption></figure>
+  </div>
+
+  <!-- ---------- Scroll photo story: keep scrolling, one image reveals at a time ---------- -->
+  <div class="story-heading">keep scrolling 👇</div>
   <section class="scroll-story" id="scrollStory">
     <div class="story-panel" onclick="toggleLightbox('image1.jpg')">
       <div class="story-photo" style="background-image:url('image1.jpg');"></div>
+      <div class="story-shade"></div>
+      <div class="story-counter">1 / 6</div>
+      <div class="story-quote">Even in stillness, you light up the whole frame.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image2.jpg')">
       <div class="story-photo" style="background-image:url('image2.jpg');"></div>
+      <div class="story-shade"></div>
+      <div class="story-counter">2 / 6</div>
+      <div class="story-quote">This is what happiness looks like — you, exactly as you are.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image3.jpg')">
       <div class="story-photo" style="background-image:url('image3.jpg');"></div>
+      <div class="story-shade"></div>
+      <div class="story-counter">3 / 6</div>
+      <div class="story-quote">Some smiles you remember. Yours, I keep.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image4.jpg')">
       <div class="story-photo" style="background-image:url('image4.jpg');"></div>
+      <div class="story-shade"></div>
+      <div class="story-counter">4 / 6</div>
+      <div class="story-quote">You make every ordinary picture feel like a favorite one.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image5.jpg')">
       <div class="story-photo" style="background-image:url('image5.jpg');"></div>
+      <div class="story-shade"></div>
+      <div class="story-counter">5 / 6</div>
+      <div class="story-quote">I didn't know "home" could look like a person until you.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image6.jpg')">
       <div class="story-photo" style="background-image:url('image6.jpg');"></div>
+      <div class="story-shade"></div>
+      <div class="story-counter">6 / 6</div>
+      <div class="story-quote">Here's to more moments just like this one, with you.</div>
     </div>
   </section>
 
@@ -1121,15 +1146,14 @@
     field.appendChild(s);
   }
 
-  // Note: floating background photos are now hardcoded directly in the HTML
+  // Note: floating background photos are hardcoded directly in the HTML
   // (see the photo-float divs near the top of <body>) so they render even
   // in static/wallpaper contexts that don't execute JavaScript.
 
-  // ---------- Scroll photo story reveal ----------
-  // Each .story-panel gets an "in-view" class added the moment it scrolls
-  // into the middle of the viewport, and removed once it scrolls back out —
-  // that's what triggers the fade/scale-up of the panel and its quote, on
-  // top of the continuous zoom-in/zoom-out animation on the photo itself.
+  // ---------- Scroll photo story ----------
+  // Each panel fades/zooms into view (and its quote floats in) as it enters
+  // the viewport, and resets when scrolled past — so it replays if you
+  // scroll back up and down again.
   const storyPanels = document.querySelectorAll('.story-panel');
   if('IntersectionObserver' in window && storyPanels.length){
     const storyObserver = new IntersectionObserver((entries)=>{
@@ -1137,14 +1161,13 @@
         if(entry.isIntersecting){
           entry.target.classList.add('in-view');
         } else {
-          // remove so the reveal animation replays if the user scrolls back up/down
           entry.target.classList.remove('in-view');
         }
       });
     }, { threshold: 0.4 });
     storyPanels.forEach(panel => storyObserver.observe(panel));
   } else {
-    // fallback for very old browsers: just show everything
+    // Fallback for very old browsers: just show them all
     storyPanels.forEach(panel => panel.classList.add('in-view'));
   }
 
