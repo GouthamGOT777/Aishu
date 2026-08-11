@@ -30,6 +30,10 @@
   .heart-field{
     position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;
   }
+  .dim-overlay{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background: radial-gradient(circle at 50% 30%, rgba(26,11,31,.35), rgba(26,11,31,.75) 75%);
+  }
   .heart{
     position:absolute;
     bottom:-10%;
@@ -54,6 +58,35 @@
   @keyframes twinkle{
     0%,100%{ opacity:0; transform:scale(.4); }
     50%{ opacity:1; transform:scale(1.4); }
+  }
+
+  /* floating background photos */
+  .photo-float{
+    position:absolute;
+    border-radius:16px;
+    overflow:hidden;
+    opacity:0;
+    box-shadow:0 0 25px rgba(255,93,162,.35);
+    border:2px solid rgba(255,255,255,.25);
+    animation: photoDrift linear infinite, photoFade linear infinite;
+    will-change: transform, opacity;
+  }
+  .photo-float img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter: saturate(1.05);
+  }
+  @keyframes photoDrift{
+    0%   { transform: translateY(0) translateX(0) rotate(var(--rot-start,-8deg)) scale(var(--scl,1)); }
+    50%  { transform: translateY(-55vh) translateX(var(--drift,40px)) rotate(0deg) scale(var(--scl,1)); }
+    100% { transform: translateY(-115vh) translateX(calc(var(--drift,40px) * -1)) rotate(var(--rot-end,8deg)) scale(var(--scl,1)); }
+  }
+  @keyframes photoFade{
+    0%{ opacity:0; }
+    8%{ opacity:var(--maxop,.5); }
+    85%{ opacity:var(--maxop,.5); }
+    100%{ opacity:0; }
   }
 
   /* ---------- Intro overlay ---------- */
@@ -495,6 +528,7 @@
 <body>
 
 <div class="heart-field" id="heartField"></div>
+<div class="dim-overlay"></div>
 
 <div id="intro">
   <div class="introRing"></div>
@@ -596,6 +630,35 @@
     s.style.animationDuration = (1.5 + Math.random()*2.5) + 's';
     s.style.animationDelay = (Math.random()*3) + 's';
     field.appendChild(s);
+  }
+
+  // Floating background photos — reuses the same image1..N.jpg files from the repo.
+  // Add/remove filenames here to match how many images you upload.
+  const bgImages = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg'];
+  const PHOTO_COUNT = 10; // how many floating photo bubbles on screen at once
+
+  for(let i=0;i<PHOTO_COUNT;i++){
+    const p = document.createElement('div');
+    p.className = 'photo-float';
+    const size = 60 + Math.random()*70; // 60px - 130px
+    p.style.width = size + 'px';
+    p.style.height = (size * (1.1 + Math.random()*0.3)) + 'px';
+    p.style.left = Math.random()*92 + 'vw';
+    p.style.bottom = (-20 - Math.random()*20) + 'vh';
+    p.style.setProperty('--drift', (Math.random()*160-80) + 'px');
+    p.style.setProperty('--rot-start', (Math.random()*24-12) + 'deg');
+    p.style.setProperty('--rot-end', (Math.random()*24-12) + 'deg');
+    p.style.setProperty('--scl', (0.85 + Math.random()*0.4).toFixed(2));
+    p.style.setProperty('--maxop', (0.35 + Math.random()*0.35).toFixed(2));
+    p.style.filter = 'blur(' + (Math.random()*1.2).toFixed(1) + 'px)';
+    p.style.animationDuration = (16 + Math.random()*14) + 's, ' + (16 + Math.random()*14) + 's';
+    p.style.animationDelay = (-Math.random()*20) + 's, ' + (-Math.random()*20) + 's';
+
+    const img = document.createElement('img');
+    img.src = bgImages[i % bgImages.length];
+    img.alt = '';
+    p.appendChild(img);
+    field.appendChild(p);
   }
 
   // ---------- Surprise polaroid ----------
