@@ -322,6 +322,28 @@
     100%{ opacity:0; }
   }
 
+  /* ---------- Small YouTube video bubble on the avatar ---------- */
+  .mini-yt{
+    position:absolute;
+    right:-14px;
+    bottom:-10px;
+    width:100px;
+    height:70px;
+    border-radius:14px;
+    overflow:hidden;
+    border:3px solid #fff;
+    box-shadow:0 8px 22px rgba(0,0,0,.5), 0 0 22px rgba(255,93,162,.65);
+    z-index:5;
+    background:#000;
+    animation: hoverFloat 3.6s ease-in-out infinite;
+  }
+  .mini-yt iframe{
+    width:100%;
+    height:100%;
+    display:block;
+    border:0;
+  }
+
   h1.title{
     font-size:clamp(30px,6vw,46px);
     background: linear-gradient(90deg,#fff,var(--gold),#fff);
@@ -955,6 +977,14 @@
       <img src="image1.jpg" alt="Aishwarya">
       <img src="image2.jpg" alt="Aishwarya">
       <img src="image3.jpg" alt="Aishwarya">
+    </div>
+    <div class="mini-yt">
+      <iframe
+        src="https://www.youtube.com/embed/b0ccZpvoT6c?autoplay=1&mute=1&loop=1&playlist=b0ccZpvoT6c&rel=0&modestbranding=1&playsinline=1"
+        title="YouTube video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
     </div>
   </div>
 
