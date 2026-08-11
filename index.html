@@ -23,14 +23,22 @@
   /* ---------- Full-page background photo ---------- */
   .bg-photo{
     position:fixed;
-    inset:0;
+    inset:-40px; /* extra bleed so zoom/float never reveals edges */
     z-index:0;
-    background-image:url('image-bg.jpeg');
+    background-image:url('image-bg.jpg');
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
-    background-attachment:fixed;
     background-color: var(--bg1); /* visible fallback tint if the image fails to load */
+    animation: bgPhotoZoomFloat 16s ease-in-out infinite;
+    will-change: transform;
+  }
+  @keyframes bgPhotoZoomFloat{
+    0%   { transform: scale(1) translate(0, 0); }
+    25%  { transform: scale(1.12) translate(-1.5%, -1%); }
+    50%  { transform: scale(1.05) translate(1%, 1.5%); }
+    75%  { transform: scale(1.15) translate(1.5%, -0.5%); }
+    100% { transform: scale(1) translate(0, 0); }
   }
 
   /* ---------- Floating hearts + sparkles background ---------- */
@@ -612,7 +620,82 @@
   .footer-hearts span:nth-child(4){ animation-delay:.6s; }
   .footer-hearts span:nth-child(5){ animation-delay:.8s; }
 
-  /* ---------- Scrolling love quotes marquee ---------- */
+  /* ---------- Scroll photo story: one image at a time, zoom + floating quote ---------- */
+  .scroll-story{
+    width:100%;
+    max-width:640px;
+    margin-top:60px;
+    display:flex;
+    flex-direction:column;
+    gap:70px;
+  }
+  .story-panel{
+    position:relative;
+    width:100%;
+    height:78vh;
+    min-height:420px;
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:0 25px 60px rgba(0,0,0,.5), 0 0 40px rgba(255,93,162,.25);
+    border:2px solid rgba(255,255,255,.18);
+    opacity:0;
+    transform: translateY(60px) scale(.92);
+    transition: opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1);
+  }
+  .story-panel.in-view{
+    opacity:1;
+    transform: translateY(0) scale(1);
+  }
+  .story-photo{
+    position:absolute;
+    inset:-25px;
+    background-size:cover;
+    background-position:center;
+    animation: storyZoom 9s ease-in-out infinite;
+  }
+  @keyframes storyZoom{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.18); }
+  }
+  .story-panel:nth-child(2n) .story-photo{ animation-duration:11s; }
+  .story-panel:nth-child(3n) .story-photo{ animation-duration:7.5s; }
+  .story-shade{
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(10,4,14,.85) 0%, rgba(10,4,14,.15) 45%, rgba(10,4,14,.05) 70%);
+  }
+  .story-quote{
+    position:absolute;
+    left:0; right:0; bottom:34px;
+    padding:0 30px;
+    text-align:center;
+    font-size:clamp(18px,3.4vw,26px);
+    font-weight:600;
+    line-height:1.5;
+    color:#fff;
+    text-shadow:0 4px 20px rgba(0,0,0,.7);
+    opacity:0;
+    transform:translateY(24px);
+    transition: opacity 1s ease .25s, transform 1s ease .25s;
+    animation: quoteFloatY 4.5s ease-in-out infinite;
+  }
+  .story-panel.in-view .story-quote{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @keyframes quoteFloatY{
+    0%,100%{ margin-bottom:0; }
+    50%{ margin-bottom:14px; }
+  }
+  .story-quote::before{
+    content:"❝";
+    display:block;
+    font-size:34px;
+    color:var(--gold);
+    margin-bottom:6px;
+    opacity:.9;
+  }
+
+
   .quote-marquee{
     width:100%;
     max-width:900px;
