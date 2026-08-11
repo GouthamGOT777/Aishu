@@ -16,14 +16,20 @@
     height:100%;
     overflow-x:hidden;
     background:radial-gradient(circle at 50% 20%, var(--bg2), var(--bg1) 70%);
-    background-size:200% 200%;
-    animation: bgShift 12s ease-in-out infinite;
     font-family:'Segoe UI', Tahoma, sans-serif;
     color:#fff;
   }
-  @keyframes bgShift{
-    0%,100%{ background-position: 50% 0%; }
-    50%{ background-position: 50% 100%; }
+
+  /* ---------- Full-page background photo ---------- */
+  .bg-photo{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background-image:url('image-bg.jpeg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
   }
 
   /* ---------- Floating hearts + sparkles background ---------- */
@@ -33,7 +39,7 @@
   }
   .dim-overlay{
     position:fixed; inset:0; z-index:1; pointer-events:none;
-    background: radial-gradient(circle at 50% 30%, rgba(26,11,31,.12), rgba(26,11,31,.42) 78%);
+    background: radial-gradient(circle at 50% 30%, rgba(26,11,31,.08), rgba(26,11,31,.32) 78%);
   }
   .heart{
     position:absolute;
@@ -743,6 +749,9 @@
 </style>
 </head>
 <body>
+
+<!-- Full-page background photo — everything else floats on top of this -->
+<div class="bg-photo"></div>
 
 <!-- ---------- Fullscreen image lightbox ---------- -->
 <div id="lightbox" onclick="closeLightbox()">
