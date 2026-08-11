@@ -32,7 +32,7 @@
   }
   .dim-overlay{
     position:fixed; inset:0; z-index:1; pointer-events:none;
-    background: radial-gradient(circle at 50% 30%, rgba(26,11,31,.35), rgba(26,11,31,.75) 75%);
+    background: radial-gradient(circle at 50% 30%, rgba(26,11,31,.12), rgba(26,11,31,.42) 78%);
   }
   .heart{
     position:absolute;
@@ -649,8 +649,8 @@
     p.style.setProperty('--rot-start', (Math.random()*24-12) + 'deg');
     p.style.setProperty('--rot-end', (Math.random()*24-12) + 'deg');
     p.style.setProperty('--scl', (0.85 + Math.random()*0.4).toFixed(2));
-    p.style.setProperty('--maxop', (0.35 + Math.random()*0.35).toFixed(2));
-    p.style.filter = 'blur(' + (Math.random()*1.2).toFixed(1) + 'px)';
+    p.style.setProperty('--maxop', (0.75 + Math.random()*0.25).toFixed(2));
+    p.style.filter = 'none';
     p.style.animationDuration = (16 + Math.random()*14) + 's, ' + (16 + Math.random()*14) + 's';
     p.style.animationDelay = (-Math.random()*20) + 's, ' + (-Math.random()*20) + 's';
 
