@@ -136,6 +136,11 @@
     object-fit:cover;
     display:block;
     filter: saturate(1.1) contrast(1.05);
+    animation: zoomPulseBig 4.5s ease-in-out infinite;
+  }
+  @keyframes zoomPulseBig{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.25); }
   }
   /* 3D pop-up + tumble-drift combined into one keyframe timeline */
   @keyframes photoPop3D{
@@ -383,6 +388,13 @@
   }
   .gallery img{
     width:100%; height:100%; object-fit:cover; display:block;
+    animation: zoomPulse 6s ease-in-out infinite;
+  }
+  .gallery figure:nth-child(odd) img{ animation-duration:7s; }
+  .gallery figure:nth-child(3n) img{ animation-duration:5.5s; animation-delay:.6s; }
+  @keyframes zoomPulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.18); }
   }
   .gallery figure figcaption{
     position:absolute; bottom:0; left:0; right:0;
@@ -567,6 +579,48 @@
   .footer-hearts span:nth-child(3){ animation-delay:.4s; }
   .footer-hearts span:nth-child(4){ animation-delay:.6s; }
   .footer-hearts span:nth-child(5){ animation-delay:.8s; }
+
+  /* ---------- Scrolling love quotes marquee ---------- */
+  .quote-marquee{
+    width:100%;
+    max-width:900px;
+    margin-top:50px;
+    overflow:hidden;
+    position:relative;
+    padding:18px 0;
+    border-top:1px solid rgba(255,255,255,.15);
+    border-bottom:1px solid rgba(255,255,255,.15);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .quote-track{
+    display:flex;
+    width:max-content;
+    gap:50px;
+    animation: quoteScroll 38s linear infinite;
+  }
+  .quote-track span{
+    font-size:16px;
+    white-space:nowrap;
+    opacity:.9;
+    letter-spacing:.5px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .quote-track span::before{
+    content:"❤";
+    color:var(--pink);
+    font-size:13px;
+  }
+  @keyframes quoteScroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+  .quote-marquee.reverse .quote-track{
+    animation-direction: reverse;
+    animation-duration: 44s;
+  }
   @keyframes bob{
     0%,100%{ transform:translateY(0); }
     50%{ transform:translateY(-10px); }
@@ -606,34 +660,34 @@
   <div class="rose" style="left:33vw; font-size:24px; --rdrift:-38px; --rr0:13deg; --rr1:-11deg; animation-duration:13.5s; animation-delay:-10s;">🌸</div>
   <!-- Hardcoded floating background photos (no JS needed — works as a static wallpaper too) -->
   <div class="photo-float" style="width:100px;height:130px;left:6vw;bottom:-20vh;--drift:60px;--rot-start:-10deg;--rot-end:8deg;--scl:1;--maxop:0.9;animation-duration:18s,18s;animation-delay:-2s,-2s;">
-    <img src="image1.jpg" alt="">
+    <img src="image1.jpg" alt="" style="animation-duration:4.2s; animation-delay:.2s;">
   </div>
   <div class="photo-float" style="width:80px;height:104px;left:18vw;bottom:-35vh;--drift:-50px;--rot-start:8deg;--rot-end:-6deg;--scl:0.9;--maxop:0.85;animation-duration:24s,24s;animation-delay:-9s,-9s;">
-    <img src="image2.jpg" alt="">
+    <img src="image2.jpg" alt="" style="animation-duration:5.0s; animation-delay:.5s;">
   </div>
   <div class="photo-float" style="width:120px;height:150px;left:30vw;bottom:-10vh;--drift:40px;--rot-start:-6deg;--rot-end:10deg;--scl:1.05;--maxop:0.95;animation-duration:20s,20s;animation-delay:-14s,-14s;">
-    <img src="image3.jpg" alt="">
+    <img src="image3.jpg" alt="" style="animation-duration:3.6s; animation-delay:.1s;">
   </div>
   <div class="photo-float" style="width:90px;height:117px;left:45vw;bottom:-28vh;--drift:-70px;--rot-start:10deg;--rot-end:-8deg;--scl:0.95;--maxop:0.8;animation-duration:22s,22s;animation-delay:-4s,-4s;">
-    <img src="image4.jpg" alt="">
+    <img src="image4.jpg" alt="" style="animation-duration:5.6s; animation-delay:.8s;">
   </div>
   <div class="photo-float" style="width:105px;height:136px;left:58vw;bottom:-18vh;--drift:55px;--rot-start:-8deg;--rot-end:6deg;--scl:1;--maxop:0.9;animation-duration:26s,26s;animation-delay:-19s,-19s;">
-    <img src="image5.jpg" alt="">
+    <img src="image5.jpg" alt="" style="animation-duration:4.6s; animation-delay:.3s;">
   </div>
   <div class="photo-float" style="width:85px;height:110px;left:70vw;bottom:-40vh;--drift:-40px;--rot-start:6deg;--rot-end:-10deg;--scl:0.92;--maxop:0.85;animation-duration:19s,19s;animation-delay:-11s,-11s;">
-    <img src="image6.jpg" alt="">
+    <img src="image6.jpg" alt="" style="animation-duration:6.0s; animation-delay:.9s;">
   </div>
   <div class="photo-float" style="width:110px;height:143px;left:80vw;bottom:-15vh;--drift:65px;--rot-start:-10deg;--rot-end:8deg;--scl:1.02;--maxop:0.9;animation-duration:23s,23s;animation-delay:-6s,-6s;">
-    <img src="image1.jpg" alt="">
+    <img src="image1.jpg" alt="" style="animation-duration:3.9s; animation-delay:.4s;">
   </div>
   <div class="photo-float" style="width:75px;height:97px;left:88vw;bottom:-32vh;--drift:-35px;--rot-start:5deg;--rot-end:-7deg;--scl:0.88;--maxop:0.8;animation-duration:21s,21s;animation-delay:-16s,-16s;">
-    <img src="image2.jpg" alt="">
+    <img src="image2.jpg" alt="" style="animation-duration:5.3s; animation-delay:.6s;">
   </div>
   <div class="photo-float" style="width:95px;height:123px;left:38vw;bottom:-45vh;--drift:45px;--rot-start:-7deg;--rot-end:9deg;--scl:0.97;--maxop:0.85;animation-duration:25s,25s;animation-delay:-21s,-21s;">
-    <img src="image3.jpg" alt="">
+    <img src="image3.jpg" alt="" style="animation-duration:4.4s; animation-delay:.7s;">
   </div>
   <div class="photo-float" style="width:100px;height:130px;left:12vw;bottom:-55vh;--drift:-55px;--rot-start:9deg;--rot-end:-9deg;--scl:1;--maxop:0.9;animation-duration:27s,27s;animation-delay:-24s,-24s;">
-    <img src="image4.jpg" alt="">
+    <img src="image4.jpg" alt="" style="animation-duration:5.8s; animation-delay:.0s;">
   </div>
 </div>
 <div class="dim-overlay"></div>
@@ -643,7 +697,7 @@
   <div class="introRing"></div>
   <div class="heartbeat">💖</div>
   <div id="introName">Aishwarya</div>
-  <div id="introSub">a little something for you</div>
+  <div id="introSub">Sundri , a little something for you</div>
 </div>
 
 <main>
@@ -703,6 +757,47 @@
   <div id="secretMsg">
     I don't need a filter, a caption, or a perfect angle to tell you this —
     you're the best part of my day, every day. Thank you for being you, Aishwarya. 💕
+  </div>
+
+  <!-- ---------- Scrolling love quotes ---------- -->
+  <div class="quote-marquee">
+    <div class="quote-track">
+      <span>You are my favorite notification.</span>
+      <span>Home isn't a place, it's you.</span>
+      <span>Every love song makes more sense now.</span>
+      <span>You're the best decision I never had to think twice about.</span>
+      <span>My day doesn't really start until I hear from you.</span>
+      <span>You make ordinary days feel like something worth remembering.</span>
+      <span>I fall for you a little more every single day.</span>
+      <!-- duplicate set for seamless infinite loop -->
+      <span>You are my favorite notification.</span>
+      <span>Home isn't a place, it's you.</span>
+      <span>Every love song makes more sense now.</span>
+      <span>You're the best decision I never had to think twice about.</span>
+      <span>My day doesn't really start until I hear from you.</span>
+      <span>You make ordinary days feel like something worth remembering.</span>
+      <span>I fall for you a little more every single day.</span>
+    </div>
+  </div>
+
+  <div class="quote-marquee reverse">
+    <div class="quote-track">
+      <span>You're proof that good things do happen.</span>
+      <span>I'd choose you in every lifetime.</span>
+      <span>Your smile is my favorite view.</span>
+      <span>With you, even quiet moments feel loud with happiness.</span>
+      <span>You're the calm I never knew I needed.</span>
+      <span>Some people search forever for what I found in you.</span>
+      <span>You turned an ordinary story into my favorite one.</span>
+      <!-- duplicate set for seamless infinite loop -->
+      <span>You're proof that good things do happen.</span>
+      <span>I'd choose you in every lifetime.</span>
+      <span>Your smile is my favorite view.</span>
+      <span>With you, even quiet moments feel loud with happiness.</span>
+      <span>You're the calm I never knew I needed.</span>
+      <span>Some people search forever for what I found in you.</span>
+      <span>You turned an ordinary story into my favorite one.</span>
+    </div>
   </div>
 
   <div class="footer-hearts">
