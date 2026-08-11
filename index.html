@@ -65,10 +65,11 @@
     position:absolute;
     border-radius:16px;
     overflow:hidden;
-    opacity:0;
+    opacity:0.85;
     box-shadow:0 0 25px rgba(255,93,162,.35);
     border:2px solid rgba(255,255,255,.25);
     animation: photoDrift linear infinite, photoFade linear infinite;
+    animation-fill-mode: both;
     will-change: transform, opacity;
   }
   .photo-float img{
@@ -527,7 +528,39 @@
 </head>
 <body>
 
-<div class="heart-field" id="heartField"></div>
+<div class="heart-field" id="heartField">
+  <!-- Hardcoded floating background photos (no JS needed — works as a static wallpaper too) -->
+  <div class="photo-float" style="width:100px;height:130px;left:6vw;bottom:-20vh;--drift:60px;--rot-start:-10deg;--rot-end:8deg;--scl:1;--maxop:0.9;animation-duration:18s,18s;animation-delay:-2s,-2s;">
+    <img src="image1.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:80px;height:104px;left:18vw;bottom:-35vh;--drift:-50px;--rot-start:8deg;--rot-end:-6deg;--scl:0.9;--maxop:0.85;animation-duration:24s,24s;animation-delay:-9s,-9s;">
+    <img src="image2.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:120px;height:150px;left:30vw;bottom:-10vh;--drift:40px;--rot-start:-6deg;--rot-end:10deg;--scl:1.05;--maxop:0.95;animation-duration:20s,20s;animation-delay:-14s,-14s;">
+    <img src="image3.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:90px;height:117px;left:45vw;bottom:-28vh;--drift:-70px;--rot-start:10deg;--rot-end:-8deg;--scl:0.95;--maxop:0.8;animation-duration:22s,22s;animation-delay:-4s,-4s;">
+    <img src="image4.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:105px;height:136px;left:58vw;bottom:-18vh;--drift:55px;--rot-start:-8deg;--rot-end:6deg;--scl:1;--maxop:0.9;animation-duration:26s,26s;animation-delay:-19s,-19s;">
+    <img src="image5.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:85px;height:110px;left:70vw;bottom:-40vh;--drift:-40px;--rot-start:6deg;--rot-end:-10deg;--scl:0.92;--maxop:0.85;animation-duration:19s,19s;animation-delay:-11s,-11s;">
+    <img src="image6.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:110px;height:143px;left:80vw;bottom:-15vh;--drift:65px;--rot-start:-10deg;--rot-end:8deg;--scl:1.02;--maxop:0.9;animation-duration:23s,23s;animation-delay:-6s,-6s;">
+    <img src="image1.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:75px;height:97px;left:88vw;bottom:-32vh;--drift:-35px;--rot-start:5deg;--rot-end:-7deg;--scl:0.88;--maxop:0.8;animation-duration:21s,21s;animation-delay:-16s,-16s;">
+    <img src="image2.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:95px;height:123px;left:38vw;bottom:-45vh;--drift:45px;--rot-start:-7deg;--rot-end:9deg;--scl:0.97;--maxop:0.85;animation-duration:25s,25s;animation-delay:-21s,-21s;">
+    <img src="image3.jpg" alt="">
+  </div>
+  <div class="photo-float" style="width:100px;height:130px;left:12vw;bottom:-55vh;--drift:-55px;--rot-start:9deg;--rot-end:-9deg;--scl:1;--maxop:0.9;animation-duration:27s,27s;animation-delay:-24s,-24s;">
+    <img src="image4.jpg" alt="">
+  </div>
+</div>
 <div class="dim-overlay"></div>
 
 <div id="intro">
@@ -632,34 +665,9 @@
     field.appendChild(s);
   }
 
-  // Floating background photos — reuses the same image1..N.jpg files from the repo.
-  // Add/remove filenames here to match how many images you upload.
-  const bgImages = ['image1.jpg','image2.jpg','image3.jpg','image4.jpg','image5.jpg','image6.jpg'];
-  const PHOTO_COUNT = 10; // how many floating photo bubbles on screen at once
-
-  for(let i=0;i<PHOTO_COUNT;i++){
-    const p = document.createElement('div');
-    p.className = 'photo-float';
-    const size = 60 + Math.random()*70; // 60px - 130px
-    p.style.width = size + 'px';
-    p.style.height = (size * (1.1 + Math.random()*0.3)) + 'px';
-    p.style.left = Math.random()*92 + 'vw';
-    p.style.bottom = (-20 - Math.random()*20) + 'vh';
-    p.style.setProperty('--drift', (Math.random()*160-80) + 'px');
-    p.style.setProperty('--rot-start', (Math.random()*24-12) + 'deg');
-    p.style.setProperty('--rot-end', (Math.random()*24-12) + 'deg');
-    p.style.setProperty('--scl', (0.85 + Math.random()*0.4).toFixed(2));
-    p.style.setProperty('--maxop', (0.75 + Math.random()*0.25).toFixed(2));
-    p.style.filter = 'none';
-    p.style.animationDuration = (16 + Math.random()*14) + 's, ' + (16 + Math.random()*14) + 's';
-    p.style.animationDelay = (-Math.random()*20) + 's, ' + (-Math.random()*20) + 's';
-
-    const img = document.createElement('img');
-    img.src = bgImages[i % bgImages.length];
-    img.alt = '';
-    p.appendChild(img);
-    field.appendChild(p);
-  }
+  // Note: floating background photos are now hardcoded directly in the HTML
+  // (see the photo-float divs near the top of <body>) so they render even
+  // in static/wallpaper contexts that don't execute JavaScript.
 
   // ---------- Surprise polaroid ----------
   // Add/remove filenames here to match how many images you upload to the repo
