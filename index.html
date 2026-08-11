@@ -29,6 +29,7 @@
   /* ---------- Floating hearts + sparkles background ---------- */
   .heart-field{
     position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;
+    perspective: 1000px;
   }
   .dim-overlay{
     position:fixed; inset:0; z-index:1; pointer-events:none;
@@ -60,35 +61,93 @@
     50%{ opacity:1; transform:scale(1.4); }
   }
 
-  /* floating background photos */
+  /* ---------- Floating roses ---------- */
+  .rose{
+    position:absolute;
+    bottom:-12%;
+    font-size:26px;
+    opacity:0.9;
+    animation: roseFloat linear infinite;
+    filter: drop-shadow(0 0 8px rgba(255,60,110,.75));
+    transform-style: preserve-3d;
+  }
+  @keyframes roseFloat{
+    0%   { transform: translateY(0) translateX(0) rotate(var(--rr0,-15deg)) rotateY(0deg); opacity:0; }
+    10%  { opacity:1; }
+    50%  { transform: translateY(-60vh) translateX(var(--rdrift,30px)) rotate(0deg) rotateY(180deg); }
+    100% { transform: translateY(-125vh) translateX(calc(var(--rdrift,30px) * -1)) rotate(var(--rr1,15deg)) rotateY(360deg); opacity:0; }
+  }
+
+  /* ---------- Big constant background rose ---------- */
+  .mega-rose{
+    position:fixed;
+    z-index:0;
+    pointer-events:none;
+    right:-6vw;
+    bottom:-8vh;
+    font-size:46vw;
+    line-height:1;
+    opacity:0.16;
+    color:var(--pink);
+    filter: drop-shadow(0 0 60px rgba(255,93,162,.6));
+    animation: megaRoseSpin 40s linear infinite, megaRosePulse 6s ease-in-out infinite;
+    transform-origin: 60% 55%;
+  }
+  @keyframes megaRoseSpin{
+    to{ transform: rotate(360deg); }
+  }
+  @keyframes megaRosePulse{
+    0%,100%{ opacity:0.12; }
+    50%{ opacity:0.22; }
+  }
+  .mega-rose-2{
+    position:fixed;
+    z-index:0;
+    pointer-events:none;
+    left:-10vw;
+    top:-10vh;
+    font-size:32vw;
+    line-height:1;
+    opacity:0.10;
+    color:var(--gold);
+    filter: drop-shadow(0 0 50px rgba(255,215,106,.5));
+    animation: megaRoseSpinRev 55s linear infinite, megaRosePulse 7s ease-in-out infinite;
+    animation-delay:0s, 2s;
+  }
+  @keyframes megaRoseSpinRev{
+    to{ transform: rotate(-360deg); }
+  }
+
+  /* floating background photos — 3D pop-up style */
   .photo-float{
     position:absolute;
     border-radius:16px;
     overflow:hidden;
-    opacity:0.85;
-    box-shadow:0 0 25px rgba(255,93,162,.35);
-    border:2px solid rgba(255,255,255,.25);
-    animation: photoDrift linear infinite, photoFade linear infinite;
+    opacity:0.9;
+    box-shadow:0 15px 35px rgba(0,0,0,.45), 0 0 30px rgba(255,93,162,.4);
+    border:2px solid rgba(255,255,255,.3);
+    animation: photoPop3D linear infinite;
     animation-fill-mode: both;
     will-change: transform, opacity;
+    transform-style: preserve-3d;
   }
   .photo-float img{
     width:100%; height:100%;
     object-fit:cover;
     display:block;
-    filter: saturate(1.05);
+    filter: saturate(1.1) contrast(1.05);
   }
-  @keyframes photoDrift{
-    0%   { transform: translateY(0) translateX(0) rotate(var(--rot-start,-8deg)) scale(var(--scl,1)); }
-    50%  { transform: translateY(-55vh) translateX(var(--drift,40px)) rotate(0deg) scale(var(--scl,1)); }
-    100% { transform: translateY(-115vh) translateX(calc(var(--drift,40px) * -1)) rotate(var(--rot-end,8deg)) scale(var(--scl,1)); }
+  /* 3D pop-up + tumble-drift combined into one keyframe timeline */
+  @keyframes photoPop3D{
+    0%   { transform: translateY(0) translateX(0) translateZ(-200px) rotateX(50deg) rotateY(var(--rot-start,-25deg)) scale(0.3); opacity:0; }
+    6%   { opacity:var(--maxop,.9); }
+    14%  { transform: translateY(-8vh) translateX(calc(var(--drift,40px) * 0.2)) translateZ(60px) rotateX(-8deg) rotateY(10deg) scale(1.12); }
+    22%  { transform: translateY(-16vh) translateX(calc(var(--drift,40px) * 0.35)) translateZ(0px) rotateX(0deg) rotateY(0deg) scale(var(--scl,1)); }
+    55%  { transform: translateY(-58vh) translateX(var(--drift,40px)) translateZ(30px) rotateX(6deg) rotateY(-14deg) scale(calc(var(--scl,1) * 1.04)); }
+    85%  { opacity:var(--maxop,.9); }
+    100% { transform: translateY(-125vh) translateX(calc(var(--drift,40px) * -1)) translateZ(-100px) rotateX(-14deg) rotateY(var(--rot-end,25deg)) scale(calc(var(--scl,1) * 0.85)); opacity:0; }
   }
-  @keyframes photoFade{
-    0%{ opacity:0; }
-    8%{ opacity:var(--maxop,.5); }
-    85%{ opacity:var(--maxop,.5); }
-    100%{ opacity:0; }
-  }
+
 
   /* ---------- Intro overlay ---------- */
   #intro{
@@ -528,7 +587,23 @@
 </head>
 <body>
 
+<div class="mega-rose">🌹</div>
+<div class="mega-rose-2">🌹</div>
+
 <div class="heart-field" id="heartField">
+  <!-- Floating roses (hardcoded so they render even without JS) -->
+  <div class="rose" style="left:4vw; font-size:30px; --rdrift:50px; --rr0:-18deg; --rr1:14deg; animation-duration:14s; animation-delay:-1s;">🌹</div>
+  <div class="rose" style="left:15vw; font-size:22px; --rdrift:-35px; --rr0:12deg; --rr1:-10deg; animation-duration:11s; animation-delay:-6s;">🌹</div>
+  <div class="rose" style="left:26vw; font-size:34px; --rdrift:45px; --rr0:-10deg; --rr1:18deg; animation-duration:16s; animation-delay:-3s;">🌺</div>
+  <div class="rose" style="left:37vw; font-size:20px; --rdrift:-25px; --rr0:15deg; --rr1:-12deg; animation-duration:10s; animation-delay:-8s;">🌹</div>
+  <div class="rose" style="left:49vw; font-size:28px; --rdrift:40px; --rr0:-14deg; --rr1:10deg; animation-duration:13s; animation-delay:-4.5s;">🌹</div>
+  <div class="rose" style="left:60vw; font-size:24px; --rdrift:-45px; --rr0:10deg; --rr1:-16deg; animation-duration:15s; animation-delay:-9s;">🌸</div>
+  <div class="rose" style="left:70vw; font-size:32px; --rdrift:35px; --rr0:-12deg; --rr1:14deg; animation-duration:12s; animation-delay:-2s;">🌹</div>
+  <div class="rose" style="left:80vw; font-size:22px; --rdrift:-30px; --rr0:16deg; --rr1:-8deg; animation-duration:14.5s; animation-delay:-7s;">🌹</div>
+  <div class="rose" style="left:90vw; font-size:26px; --rdrift:38px; --rr0:-16deg; --rr1:12deg; animation-duration:11.5s; animation-delay:-5s;">🌺</div>
+  <div class="rose" style="left:8vw; font-size:20px; --rdrift:-20px; --rr0:9deg; --rr1:-14deg; animation-duration:17s; animation-delay:-11s;">🌹</div>
+  <div class="rose" style="left:55vw; font-size:18px; --rdrift:22px; --rr0:-9deg; --rr1:15deg; animation-duration:9.5s; animation-delay:-3.5s;">🌹</div>
+  <div class="rose" style="left:33vw; font-size:24px; --rdrift:-38px; --rr0:13deg; --rr1:-11deg; animation-duration:13.5s; animation-delay:-10s;">🌸</div>
   <!-- Hardcoded floating background photos (no JS needed — works as a static wallpaper too) -->
   <div class="photo-float" style="width:100px;height:130px;left:6vw;bottom:-20vh;--drift:60px;--rot-start:-10deg;--rot-end:8deg;--scl:1;--maxop:0.9;animation-duration:18s,18s;animation-delay:-2s,-2s;">
     <img src="image1.jpg" alt="">
