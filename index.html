@@ -493,13 +493,14 @@
     overflow:hidden;
     box-shadow:0 25px 60px rgba(0,0,0,.5), 0 0 40px rgba(255,93,162,.25);
     border:2px solid rgba(255,255,255,.18);
-    opacity:0;
-    transform: translateY(60px) scale(.92);
-    transition: opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1);
-  }
-  .story-panel.in-view{
+    /* visible by default — JS only adds a subtle "pop" below, it never gates visibility */
     opacity:1;
     transform: translateY(0) scale(1);
+    transition: transform .9s cubic-bezier(.22,1,.36,1), box-shadow .9s ease;
+  }
+  .story-panel.in-view{
+    transform: translateY(0) scale(1.02);
+    box-shadow:0 30px 70px rgba(0,0,0,.55), 0 0 55px rgba(255,93,162,.35);
   }
   .story-photo{
     position:absolute;
@@ -528,8 +529,9 @@
     line-height:1.5;
     color:#fff;
     text-shadow:0 4px 20px rgba(0,0,0,.7);
-    opacity:0;
-    transform:translateY(24px);
+    /* visible by default at reduced opacity — JS bumps it to full on scroll-into-view */
+    opacity:.75;
+    transform:translateY(0);
     transition: opacity 1s ease .25s, transform 1s ease .25s;
     animation: quoteFloatY 4.5s ease-in-out infinite;
   }
@@ -1006,75 +1008,26 @@
     <figure><img src="image6.jpg" alt="photo 6" onclick="toggleLightbox('image6.jpg')"><figcaption>6</figcaption></figure>
   </div>
 
-  <!-- ---------- Scroll photo story: one image at a time, zoom in/out, floating quote ---------- -->
-  <h2 class="story-heading">Keep scrolling 💫
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  </h2>
+  <!-- ---------- Scroll photo story: one image at a time, zoom in/out ---------- -->
+  <h2 class="story-heading">Keep scrolling 💫</h2>
   <section class="scroll-story" id="scrollStory">
     <div class="story-panel" onclick="toggleLightbox('image1.jpg')">
       <div class="story-photo" style="background-image:url('image1.jpg');"></div>
-      <div class="story-shade"></div>
-      <div class="story-count">1 / 6</div>
-      <div class="story-quote">You're the first bit of color in every ordinary day.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image2.jpg')">
       <div class="story-photo" style="background-image:url('image2.jpg');"></div>
-      <div class="story-shade"></div>
-      <div class="story-count">2 / 6</div>
-      <div class="story-quote">Every picture of you looks like my favorite memory.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image3.jpg')">
       <div class="story-photo" style="background-image:url('image3.jpg');"></div>
-      <div class="story-shade"></div>
-      <div class="story-count">3 / 6</div>
-      <div class="story-quote">I never knew calm could look this beautiful.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image4.jpg')">
       <div class="story-photo" style="background-image:url('image4.jpg');"></div>
-      <div class="story-shade"></div>
-      <div class="story-count">4 / 6</div>
-      <div class="story-quote">You make simple moments feel like something to keep forever.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image5.jpg')">
       <div class="story-photo" style="background-image:url('image5.jpg');"></div>
-      <div class="story-shade"></div>
-      <div class="story-count">5 / 6</div>
-      <div class="story-quote">This smile right here? My whole heart just melted.</div>
     </div>
     <div class="story-panel" onclick="toggleLightbox('image6.jpg')">
       <div class="story-photo" style="background-image:url('image6.jpg');"></div>
-      <div class="story-shade"></div>
-      <div class="story-count">6 / 6</div>
-      <div class="story-quote">No caption needed — you already say it all.</div>
     </div>
   </section>
 
